@@ -62,7 +62,7 @@ def code_name():
         'r': "reef", 
         's': "serpent", 
         't': "tree", 
-        'u': "uncinia", 
+        'u': "uranus", 
         'v': "volcano", 
         'w': "waterfall", 
         'x': "xeranthemum", 
@@ -98,18 +98,26 @@ def code_name():
         'z': "zimmer"
     }
 
-    
-    print("So you're from the Western district? I had a brother live there a few years ago. We have a few westerners here at base. You'll fit right in.")
-    original_name = input("Before you head inside, chief is going to need your name: ")
+    print("Now just to give you a code name. We can't risk any foreign interceptions revealing your assignment.")
+    original_name = input("I'm going to need your real name before we get started: ").lower()
     first_letter = original_name[0]
     last_letter = original_name[-1]
     
     code = first_word[first_letter] + " " + second_word[last_letter]  
-    
-    print("Now just to give you a code name. We can't risk any foreign interceptions revealing your assignment.")
-    print(f"Looks like your name was chosen. From now on, you will be known as {code} or {first_letter.upper()}{last_letter.upper()} for short.")
 
-#End Runs
-while True:
-    code_name()
+    print(f"Alright, from now on, you will be known as {code} or {first_letter.lower()}_{last_letter.upper()} for short.")
+    print("Now you're ready to go.")
 
+#Introductory Procedure
+print("Welcome to the Egg, the headquarters of the GSS")
+print("The CIA sent you here to aid in our hunt of the corrupt Prime Minister of Translutia, who the FBI have labelled as a national security threat of the highest order.")
+code_name()
+print("You've been given some basic tools to help you in addition to your own skillset.")
+print("You'll be going in to scout the area before we send in the senior team.")
+print("You are to stay silent and report ONLY. We don't want to cause an international crisis here.")
+print("With that all said and done, your train to Translutia leaves in 20 minutes. Don't miss it.")
+print("")
+print("")
+print("                                         (▀̿Ĺ̯▀̿ ̿)                                              ")
+print("")
+print("")
