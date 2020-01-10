@@ -55,22 +55,22 @@ def Commands(command):
     """Function for receiving commands"""
 
     print("You have received a letter from HQ.")
-    print(command)
+    
+    for items in command:
+        print(items)
 
-Commands(CommA)    
-
-CommA = {
-    print(f"Agent {code}.")
-    print(f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade.")
-    print(f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship.")
-    print(f"    This city is crawling with spies and counterspies. Be of utmost precaution.")        
-    print(f"    The city will be hosting its annual celebratory festival in honor of dictator Bashmany Rotendero.")
-    print(f"    We need you to scout the parade that will be held there. ")
-    print(f"    The parade begins in Hagenstade, and ends at the capital, Rotendale. The senior team will then infiltrate the dictator's compound.")
-    print(f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ")
-    print(f"    The senior team will arrive in two days. The parade will be the day after.")
-    print(f"    We will be sending you some packages as well. These packages contain valuable tools and information.")
-    print(f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.")
-    print(f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.")
-    print(f"    Good luck agent. Your first package is at the back left door of the train station.")
-}
+Commands([
+    (f"Agent ____________."),
+    (f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade."),
+    (f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship."),
+    (f"    This city is crawling with spies and counterspies. Be of utmost precaution."),        
+    (f"    The city will be hosting its annual celebratory festival in honor of dictator Bashmany Rotendero."),
+    (f"    We need you to scout the parade that will be held there. "),
+    (f"    The parade begins in Hagenstade, and ends at the capital, Rotendale. The senior team will then infiltrate the dictator's compound."),
+    (f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. "),
+    (f"    The senior team will arrive in two days. The parade will be the day after."),
+    (f"    We will be sending you some packages as well. These packages contain valuable tools and information."),
+    (f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission."),
+    (f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS."),
+    (f"    Good luck agent. Your first package is at the back left door of the train station.")
+    ])
