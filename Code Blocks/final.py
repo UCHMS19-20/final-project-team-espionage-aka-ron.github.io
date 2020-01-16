@@ -121,11 +121,15 @@ def packages(package):
 
     print("You have received a package.")
     open_package = input("Would you like to open it? ").lower()
-
-    if open_package == 'yes':
+    
+    while open_package != 'yes' or 'y' or 'n' or 'no':
+        print("please choose if you would like to open the box. Answer with 'yes', 'y', 'no', or 'n'.")
+    if open_package == 'yes' or 'y':
         print(package)
-    else:
+    elif open_package == 'no' or 'n':
         print("The package will be safely dealt with.")
+    
+        
 def commands(command):
     """Function for receiving commands"""
 
@@ -171,7 +175,7 @@ time.sleep(0.75)
 
 
 #First Action Variables
-command_list = [
+command_1 = [
     f"Agent ____________.",
     f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade.",
     f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship.",
@@ -189,12 +193,7 @@ command_list = [
 
 commands(command_list)
 
-# Packages([
-#    ("You have gained a new skill.")
-#     for skills in Skills():
-#        skills.append['espionage']['lip_reading']
-
-#])
+package_1 = 
 
 pygame.init()
 
@@ -205,6 +204,8 @@ font = pygame.font.SysFont("Courier New", 250)
 codes = {
     'door': ['compound1', 'compound2']
 }
+
+sequence = 'door'
 
 def door_unlocking():
     """Function that unlocks doors"""
@@ -224,10 +225,6 @@ def door_unlocking():
         print("There is a 4x4 keypad on the side with a wide assortment of symbols, letters, and numbers.")
         print("Maybe the decoder will help...")
         
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit() 
         screen.blit(text1, (xpos, ypos))
         ypos += 250
         screen.blit(text2, (xpos, ypos))
@@ -238,10 +235,14 @@ def door_unlocking():
         pygame.display.flip()
         
     elif check_code == 'compound2':
-        #Filler
+        Filler
     elif check_code == 'compound3':
-        #Filler
+        Filler
     else:
         print("You do not have the correct decoder to try this door. Find the encryption and try again.")
 
-door_unlocking()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit() 
+    door_unlocking()
