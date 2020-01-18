@@ -210,7 +210,8 @@ def Hagenstade(hours):
         first_loc = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
 
         while first_loc != "park" or "train station" or "port" or "building" or "bank" or "tallest building" or "national bank":
-            first_loc = input("Please choose one of the five locations. You only have a limited time to explore.").lower()
+            first_loc = input("Please choose one of the five locations. You only have a limited time to explore. ").lower()
+            print(first_loc)
 
         if first_loc == "park":
             hours -= 24
