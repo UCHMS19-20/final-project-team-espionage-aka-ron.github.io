@@ -212,8 +212,8 @@ def door_unlocking():
 
     print("You are approaching a door.")
 
-    check_code = codes['door'][0]
-    if check_code == 'compound1':
+    check_code = codes['door']
+    if 'compound1' == check_code:
         text1 = font.render("L T X G", True, (225, 225, 225))
         text2 = font.render("L T X G", True, (225, 225, 225))
         text3 = font.render("L T X G", True, (225, 225, 225))
