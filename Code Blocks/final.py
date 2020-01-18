@@ -4,40 +4,34 @@ import sys
 import time
 #import pygame
 
-#Classes
-class Inventory:
-    """Creating player's inventory for their mission"""
-
-    tools = {
-        'binoculars': {
-            'quantity': 1,
-            'uses': ['zoom_in', 'night_vision', 'thermal_vision']
-        },
-        'bug' :  {
-            'quantity': 3,
-            'uses': ['eavesdrop', 'record']
-        },
-        'camera':  {
-            'quantity': 1,
-            'uses': ['zoom_in', 'taking_pictures', 'image_filtering', 'image_to_chip']
-        },
-        'flashdrive':  {
-            'quantity': 1,
-            'uses': ['storage']
-        },
-        'phone':  {
-            'quantity': 1,
-            'uses': ['receive_instructions', 'erase', 'tracking', 'self_destruct']
-        }
+tools = {
+    'binoculars': {
+        'quantity': 1,
+        'uses': ['zoom_in', 'night_vision', 'thermal_vision']
+    },
+    'bug' :  {
+        'quantity': 3,
+        'uses': ['eavesdrop', 'record']
+    },
+    'camera':  {
+        'quantity': 1,
+        'uses': ['zoom_in', 'taking_pictures', 'image_filtering', 'image_to_chip']
+    },
+    'flashdrive':  {
+        'quantity': 1,
+        'uses': ['storage']
+    },
+    'phone':  {
+        'quantity': 1,
+        'uses': ['receive_instructions', 'erase', 'tracking', 'self_destruct']
     }
-class Skills:
-    """A bank of skills that player will collect on mission"""
+}
 
-    skills: {
-        'espionage': ['follow', 'record', 'plant'],
-        'technology': ['decrypt', 'encrypt', 'storage'],
-        'combat': ['hand_to_hand', 'firearm']
-    }
+skills: {
+    'espionage': ['follow', 'record', 'plant'],
+    'technology': ['decrypt', 'encrypt', 'storage'],
+    'combat': ['hand_to_hand', 'firearm']
+}
 
 #Functions
 def code_name():
@@ -101,18 +95,18 @@ def code_name():
     }
 
     print("Now just to give you a code name. We can't risk any foreign interceptions revealing your assignment.")
-    time.sleep(2.5)
+    ##(2.5)
     original_name = input("I'm going to need your real name before we get started: ").lower()
     first_letter = original_name[0]
     last_letter = original_name[-1]
     
     code = first_word[first_letter] + " " + second_word[last_letter]  
     
-    time.sleep(3.5)
+    ##(3.5)
     print("Working...")
-    time.sleep(3.5)
+    ##(3.5)
     print(f"Alright, from now on, you will be known as {code} or {first_letter.lower()}_{last_letter.upper()} for short.")
-    time.sleep(1.5)
+    ##(1.5)
     print("Now you're ready to go.")
 
     return code
@@ -157,8 +151,10 @@ def park():
 
     section = input("Which area would you like to explore first? ").lower()
 
-    while section != "west" or "east" or "north" or "south" or "center":
-        section = input("Choose one of the cardinal directions + the center where each thing is located.").lower()
+    while section not in ["west" , "east" , "north" , "south" , "center"]:
+        section = input("Choose one of the cardinal directions + the center where each thing is located. ").lower()
+    
+    story_items = {}
     
     while time > 0:
         if section == 'north':
@@ -173,7 +169,7 @@ def park():
             
             rusure = input("There isn't much to see here. Do you still want to explore the area? ").lower()
 
-            while rusure != "yes" or "no":
+            while rusure != "yes" and "no":
                 rusure = input("Please state a yes or no answer.")
 
             if rusure == "no":
@@ -183,7 +179,11 @@ def park():
             
             if rusure == "yes" and time > 6:
                 time -= 6
-                print("After further inspection of the rocket, you find ")
+                print("After further inspection of the rocket, you find a small panel of the rocket where the exterior was ripped off.")
+                print("Hidden behind one of the wall panels, you find a small key, with no inscription")
+                story_items["rocket_key"] = 1
+                print(story_items)
+                
 
             else:
                 print("You do not have enough time to explore the area. Please choose a different section")
@@ -191,7 +191,7 @@ def park():
     
     if time == 0:
         print("You have ran out of time for today. You must return to the hotel immediately.")
-        print(f"Good night Agent {code_name}. Your next instructions will be sent tomorrow morning.")
+        print(f"Good night Agent {agent_name}. Your next instructions will be sent tomorrow morning.")
          
  
 def Hagenstade(hours):
@@ -209,81 +209,84 @@ def Hagenstade(hours):
 
         first_loc = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
 
-        while first_loc != "park" or "train station" or "port" or "building" or "bank" or "tallest building" or "national bank":
+        while first_loc not in ["park", "train station", "port", "building", "bank", "tallest building", "national bank"]:
             first_loc = input("Please choose one of the five locations. You only have a limited time to explore. ").lower()
-            print(first_loc)
 
-        if first_loc == "park":
-            hours -= 24
-            park()
-            return hours
+        hours = locations(first_loc, hours)
 
-#Introductory Procedure
-time.sleep(3.0)
-print("")
-print("")
-print("Welcome to the Egg, the headquarters of the GSS")
-time.sleep(1.5)
-print("The CIA sent you here to aid in our hunt of the corrupt Prime Minister of Translutia, who the FBI have labelled as a national security threat of the highest order.")
-time.sleep(3)
-print("You have shown good discipline in the field, and you could be a great asset to us.")
-time.sleep(1.5)
-code_name = code_name()
-time.sleep(1.5)
-print("You've been given some basic tools to help you in addition to your own skillset.")
-time.sleep(1.5)
-print("You'll be going in to scout the area before we send in the senior team.")
-time.sleep(1.5)
-print("You are to stay silent and report ONLY. We don't want to cause an international crisis here.")
-time.sleep(1.5)
-print("I will be helping you along the way, making sure you're on the right track.")
-time.sleep(1.5)
-print("Headquarters will also send you some commands, which you will receive on your phone. Don't lose it.")
-time.sleep(1.5)
-print("Expect your first command at exactly 08:00. Make sure you read it in secret.")
-time.sleep(1.5)
-print("With that all said and done, your train to Translutia leaves in 20 minutes. Don't miss it.")
-time.sleep(2)
-print("")
-time.sleep(0.75)
-print("")
-time.sleep(0.75)
-print("                                         (▀̿Ĺ̯▀̿ ̿)                                              ")
-time.sleep(0.75)
-print("")
-time.sleep(0.75)
-print("")
-time.sleep(0.75)
+def locations(choice, hours):
+    """To be used with Hagenstade function for ease of use"""
 
+    if choice == "park":
+        hours -= 24
+        park()
+        return hours
 
+def main():
+    #Introductory Procedure
+    ##(3.0)
+    print("")
+    print("")
+    print("Welcome to the Egg, the headquarters of the GSS")
+    ##(1.5)
+    print("The CIA sent you here to aid in our hunt of the corrupt Prime Minister of Translutia, who the FBI have labelled as a national security threat of the highest order.")
+    ##(3)
+    print("You have shown good discipline in the field, and you could be a great asset to us.")
+    ##(1.5)
+    agent_name = code_name()
+    ##(1.5)
+    print("You've been given some basic tools to help you in addition to your own skillset.")
+    ##(1.5)
+    print("You'll be going in to scout the area before we send in the senior team.")
+    ##(1.5)
+    print("You are to stay silent and report ONLY. We don't want to cause an international crisis here.")
+    ##(1.5)
+    print("I will be helping you along the way, making sure you're on the right track.")
+    ##(1.5)
+    print("Headquarters will also send you some commands, which you will receive on your phone. Don't lose it.")
+    ##(1.5)
+    print("Expect your first command at exactly 08:00. Make sure you read it in secret.")
+    ##(1.5)
+    print("With that all said and done, your train to Translutia leaves in 20 minutes. Don't miss it.")
+    ##(2)
+    print("")
+    ##(0.75)
+    print("")
+    ##(0.75)
+    print("                                         (▀̿Ĺ̯▀̿ ̿)                                              ")
+    ##(0.75)
+    print("")
+    ##(0.75)
+    print("")
+    ##(0.75)
 
+    #First Action Variables
+    hours = 73
 
+    command_1 = [
+        f"Agent {agent_name}.",
+        f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade.",
+        f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship.",
+        f"    This city is crawling with spies and counterspies. Be of utmost precaution.",       
+        f"    The city will be hosting its annual celebratory festival in honor of dictator Bashmany Rotendero.",
+        f"    We need you to scout the parade that will be held there. ",
+        f"    The parade begins in Hagenstade, and ends at the capital, Rotendale.",
+        f"    The parade will provide perfect cover for the senior team.",
+        f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
+        f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
+        f"    The senior team will arrive in two days. The parade will be the day after.",
+        f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
+        f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.",
+        f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.",
+        f"    Good luck agent. Your first package will be dropped tomorrow."
+        ]
 
+    commands(command_1)
 
-#First Action Variables
-hours = 73
+    hours = Hagenstade(hours)
 
-command_1 = [
-    f"Agent {code_name}.",
-    f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade.",
-    f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship.",
-    f"    This city is crawling with spies and counterspies. Be of utmost precaution.",       
-    f"    The city will be hosting its annual celebratory festival in honor of dictator Bashmany Rotendero.",
-    f"    We need you to scout the parade that will be held there. ",
-    f"    The parade begins in Hagenstade, and ends at the capital, Rotendale.",
-    f"    The parade will provide perfect cover for the senior team.",
-    f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
-    f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
-    f"    The senior team will arrive in two days. The parade will be the day after.",
-    f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
-    f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.",
-    f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.",
-    f"    Good luck agent. Your first package will be dropped tomorrow."
-    ]
-
-commands(command_1)
-
-hours = Hagenstade(hours)
+if __name__ == "__main__":
+    main()
 
 """pygame.init()
 
