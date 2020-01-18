@@ -2,7 +2,7 @@
 import random
 import sys
 import time
-import pygame
+#import pygame
 
 #Classes
 class Inventory:
@@ -116,6 +116,7 @@ def code_name():
     print("Now you're ready to go.")
 
     return code
+
 def packages(package):
     """Opens and sends messages about reports"""
 
@@ -128,7 +129,6 @@ def packages(package):
         print(package)
     elif open_package == 'no' or 'n':
         print("The package will be safely dealt with.")
-    
         
 def commands(command):
     """Function for receiving commands"""
@@ -137,6 +137,85 @@ def commands(command):
     
     for items in command:
         print(items)
+
+def park():
+    """Park location in Hagenstade"""
+
+    time = 10
+    chosen = []
+    
+    print("You have arrived at Freedom Park.") 
+    print("Yes, I realize that it is an oxymoron to have a park named 'Freedom' in a dictatorship country. Don't ask about it.")
+    print("This park is about a square kilometer in area, and is right by the sea. There isn't much going on here, though.")
+    print("On the north side, there is a giant mounted rocket, probably to instill fear in the people.")
+    print("The east side, where you are right now, has a wilting flower garden to the side, and a dried out fountain to the other side.")
+    print("The south side has a big square building, but we're not sure what is there.")
+    print("The west side has a degraded basketball court, and the center of the park has a big grassy oval.")
+    print("Everything is pretty barren and devoid of life. You're the only one in the entire park.")
+    print(f"The time right now is 10:00. You have {time} hours to explore and get back to your dormitory before curfew.")
+    print("Each section will take a different chunk of your time, so choose wisely.")
+
+    section = input("Which area would you like to explore first? ").lower()
+
+    while section != "west" or "east" or "north" or "south" or "center":
+        section = input("Choose one of the cardinal directions + the center where each thing is located.").lower()
+    
+    while time > 0:
+        if section == 'north':
+            while section in chosen:
+                section = ("You have already chosen to go north. Please choose another section. ").lower()
+            
+            chosen.append("north")
+
+            print("The rocket looks very imposing as you approach. It is at least 50 meters tall, angled towards the sea.")
+            print("It has a big black ribbed mount with a diameter of at least 3 meters.")
+            print('A lone plaque behind the rocket reads, "Markareshi III Rocket. First rocket in failed nuclear weapons program."')
+            
+            rusure = input("There isn't much to see here. Do you still want to explore the area? ").lower()
+
+            while rusure != "yes" or "no":
+                rusure = input("Please state a yes or no answer.")
+
+            if rusure == "no":
+                time -= 0.5
+                print(f"You have {time} hours left.")
+                section = input("Which area would you like to explore next? ").lower()
+            
+            if rusure == "yes" and time > 6:
+                time -= 6
+                print("After further inspection of the rocket, you find ")
+
+            else:
+                print("You do not have enough time to explore the area. Please choose a different section")
+                section = input("Which area would you like to explore next? ").lower()
+    
+    if time == 0:
+        print("You have ran out of time for today. You must return to the hotel immediately.")
+        print(f"Good night Agent {code_name}. Your next instructions will be sent tomorrow morning.")
+         
+ 
+def Hagenstade(hours):
+    """Sequence for player"""
+
+    if hours == 73:
+        print("The parade will be held in three days, and begins at 09:00. The time right now is 08:00. That leaves you with 73 hours.")
+        print("Until then, explore the area, collect intel, and gain skills and tools to help you in Translutia.")
+        print("While you do explore Hagenstade, be wary of the curfew, which is at 20:00 sharp. Anyone not in their house by curfew will be arrested.")
+        print("Hagenstade has five major locations worth investigating. Each one will take a day of your time, so make sure to choose wisely. You can only visit three before the parade.")
+        print("Each location will be patrolling with guards and police. However, each location has differing security measures and officers.")
+        print("The five locations are as follows, in increasing security levels: the park, the train station, the port, the tallest building, and the national bank.")
+        print("The building and the bank offer the most to gain, but also pose the most risk. We do not need to remind you that capture and arrest is not an option.")
+        print("Your capture puts the whole operation at risk. The GSS trusts you to make the right decisions. Other than that, your time is yours.")
+
+        first_loc = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
+
+        while first_loc != "park" or "train station" or "port" or "building" or "bank" or "tallest building" or "national bank":
+            first_loc = input("Please choose one of the five locations. You only have a limited time to explore.").lower()
+
+        if first_loc == "park":
+            hours -= 24
+            park()
+            return hours
 
 #Introductory Procedure
 time.sleep(3.0)
@@ -148,13 +227,19 @@ print("The CIA sent you here to aid in our hunt of the corrupt Prime Minister of
 time.sleep(3)
 print("You have shown good discipline in the field, and you could be a great asset to us.")
 time.sleep(1.5)
-code_name()
+code_name = code_name()
 time.sleep(1.5)
 print("You've been given some basic tools to help you in addition to your own skillset.")
 time.sleep(1.5)
 print("You'll be going in to scout the area before we send in the senior team.")
 time.sleep(1.5)
 print("You are to stay silent and report ONLY. We don't want to cause an international crisis here.")
+time.sleep(1.5)
+print("I will be helping you along the way, making sure you're on the right track.")
+time.sleep(1.5)
+print("Headquarters will also send you some commands, which you will receive on your phone. Don't lose it.")
+time.sleep(1.5)
+print("Expect your first command at exactly 08:00. Make sure you read it in secret.")
 time.sleep(1.5)
 print("With that all said and done, your train to Translutia leaves in 20 minutes. Don't miss it.")
 time.sleep(2)
@@ -175,27 +260,31 @@ time.sleep(0.75)
 
 
 #First Action Variables
+hours = 73
+
 command_1 = [
-    f"Agent ____________.",
+    f"Agent {code_name}.",
     f"    Welcome to Translutia, more specifically, the biggest port city of Hagenstade.",
     f"    This city is the most democratic in the country, and as a result is under strict supervision under the dictatorship.",
     f"    This city is crawling with spies and counterspies. Be of utmost precaution.",       
     f"    The city will be hosting its annual celebratory festival in honor of dictator Bashmany Rotendero.",
     f"    We need you to scout the parade that will be held there. ",
-    f"    The parade begins in Hagenstade, and ends at the capital, Rotendale. The senior team will then infiltrate the dictator's compound.",
+    f"    The parade begins in Hagenstade, and ends at the capital, Rotendale.",
+    f"    The parade will provide perfect cover for the senior team.",
+    f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
     f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
     f"    The senior team will arrive in two days. The parade will be the day after.",
     f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
     f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.",
     f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.",
-    f"    Good luck agent. Your first package is at the back left door of the restaurant across the street from your hotel."
+    f"    Good luck agent. Your first package will be dropped tomorrow."
     ]
 
-commands(command_list)
+commands(command_1)
 
-package_1 = 
+hours = Hagenstade(hours)
 
-pygame.init()
+"""pygame.init()
 
 screen = pygame.display.set_mode( (1200, 650) )
 
@@ -208,7 +297,7 @@ codes = {
 sequence = 'door'
 
 def door_unlocking():
-    """Function that unlocks doors"""
+    """'Function that unlocks doors'"""
 
     print("You are approaching a door.")
 
@@ -241,8 +330,5 @@ def door_unlocking():
     else:
         print("You do not have the correct decoder to try this door. Find the encryption and try again.")
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit() 
-    door_unlocking()
+while True:"""
+
