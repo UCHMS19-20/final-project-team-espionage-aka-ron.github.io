@@ -27,6 +27,8 @@ tools = {
     }
 }
 
+story_items {}
+
 skills: {
     'espionage': ['follow', 'record', 'plant'],
     'technology': ['decrypt', 'encrypt', 'storage'],
@@ -154,8 +156,6 @@ def park():
     while section not in ["west" , "east" , "north" , "south" , "center"]:
         section = input("Choose one of the cardinal directions + the center where each thing is located. ").lower()
     
-    story_items = {}
-    
     while time > 0:
         if section == 'north':
             while section in chosen:
@@ -177,14 +177,42 @@ def park():
                 print(f"You have {time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
             
-            if rusure == "yes" and time > 6:
-                time -= 6
+            if rusure == "yes" and time > 0.5:
+                time -= 0.5
                 print("After further inspection of the rocket, you find a small panel of the rocket where the exterior was ripped off.")
-                print("Hidden behind one of the wall panels, you find a small key, with no inscription")
-                story_items["rocket_key"] = 1
-                print(story_items)
-                
+                print("Hidden behind one of the wall panels, you find a small keycard, with a blue stripe and the letters Ξ Π Λ Γ")
+                story_items["keycard"] = 1
+                print("You continue to look around the rocket. You notice a little crack near the base of the mount.")
+                print("The crack oddly looks like the shape of an arrow going up. You look up at the rocket.")
+                print("Maybe you should use your binoculars...")
+                print("You zoom in with the binoculars, and spot a little slit right at the base of the nose cone. It has to be at least 40 meters up.")
+                print("A fall from that height would surely break bones. Worse yet, someone could spot you, and the mission would be in jeopardy.")
+                print("Is it worth the mission if it's just a crack and not anything special?")
 
+                going_up = input("Do you want to climb the rocket, knowing full well of the consequences? ").lower()
+
+                while going_up != "yes" and "no"
+                    going_up = input("No time to spare. The rocket looms overhead. Do you climb it? ")
+                
+                if going_up == "no":
+                    print(f"you have {time} hours left.")
+                    section = input("Which area would you like to explore next? ").lower()
+                
+                if going_up == "yes":
+                    print("You slowly go up the rocket, being careful of each step.")
+                    print("Suddenly a whistle pierces the silence of the park. You've been spotted!")
+                    print("You scramble up the rocket faster. You are now making plenty of noise. It seems you've caught the attention of the whole city.")
+                    print("The guard below you is shouting at you. You can't understand him, however.")
+                    print("Just as you make it to the nose cone, you hear a loud bang. A quick glanse beneath you reveals the guard holding a handgun.")
+                    print("You have only seconds. You insert the keycard into the slot, and wait. The guard shoots again.")
+                    print("A third shot rings out. This guard has terrible aim. *cough* plot armor *cough*")
+                    print("Miraculously, the keycard ejects from the slot and the nose cone begins to lift.")
+                    print("The hydraulics reveal an opening, and you quickly stumble through. In your haste, your flashdrive gets caught on the metal and falls.")
+                    del tools["flashdrive"]
+                    print("You can't think about the lost flashdrive however. Let's hope nothing important was on there.")
+                    
+                    #rocket()
+                
             else:
                 print("You do not have enough time to explore the area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
@@ -193,8 +221,9 @@ def park():
         print("You have ran out of time for today. You must return to the hotel immediately.")
         print(f"Good night Agent {agent_name}. Your next instructions will be sent tomorrow morning.")
          
- 
-def Hagenstade(hours):
+def rocket()
+
+def Hagenstade(score, hours):
     """Sequence for player"""
 
     if hours == 73:
@@ -262,6 +291,7 @@ def main():
 
     #First Action Variables
     hours = 73
+    score = 0
 
     command_1 = [
         f"Agent {agent_name}.",
@@ -283,7 +313,7 @@ def main():
 
     commands(command_1)
 
-    hours = Hagenstade(hours)
+    hours = Hagenstade(score, hours)
 
 if __name__ == "__main__":
     main()
