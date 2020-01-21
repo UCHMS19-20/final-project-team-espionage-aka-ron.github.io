@@ -27,13 +27,21 @@ tools = {
     }
 }
 
-story_items {}
+story_items = {}
 
 skills: {
     'espionage': ['follow', 'record', 'plant'],
     'technology': ['decrypt', 'encrypt', 'storage'],
     'combat': ['hand_to_hand', 'firearm']
 }
+
+#Classes
+class Location_Input():
+    """Will take arguments from location function and return changed values"""
+
+    hours = 49
+    choice = ""
+    stars = 0
 
 #Functions
 def code_name():
@@ -119,11 +127,11 @@ def packages(package):
     print("You have received a package.")
     open_package = input("Would you like to open it? ").lower()
     
-    while open_package != 'yes' or 'y' or 'n' or 'no':
-        print("please choose if you would like to open the box. Answer with 'yes', 'y', 'no', or 'n'.")
-    if open_package == 'yes' or 'y':
+    while open_package not in ['yes','no']:
+        open_package = input("please choose if you would like to open the box. Answer with 'yes' or 'no'.")
+    if open_package == 'yes':
         print(package)
-    elif open_package == 'no' or 'n':
+    elif open_package == 'no':
         print("The package will be safely dealt with.")
         
 def commands(command):
@@ -134,10 +142,10 @@ def commands(command):
     for items in command:
         print(items)
 
-def park():
+def park(stars):
     """Park location in Hagenstade"""
 
-    time = 10
+    time = 10.0
     chosen = []
     
     print("You have arrived at Freedom Park.") 
@@ -150,16 +158,21 @@ def park():
     print("Everything is pretty barren and devoid of life. You're the only one in the entire park.")
     print(f"The time right now is 10:00. You have {time} hours to explore and get back to your dormitory before curfew.")
     print("Each section will take a different chunk of your time, so choose wisely.")
+    print("If you don't have any time to explore any other areas, but still have a little remaining, feel free to walk around the center for the remainder.")
+    print("The center will not give any main story elements, but may offer a chance to gain new tools and skills.")
 
-    section = input("Which area would you like to explore first? ").lower()
+    section = input("With all that said and done, which area would you like to explore first? ").lower()
 
     while section not in ["west" , "east" , "north" , "south" , "center"]:
         section = input("Choose one of the cardinal directions + the center where each thing is located. ").lower()
     
     while time > 0:
+
+        while section in chosen:
+                section = input(f"You have already chosen to go {section}. Please choose another section. ").lower()
+
         if section == 'north':
-            while section in chosen:
-                section = ("You have already chosen to go north. Please choose another section. ").lower()
+            print(chosen)
             
             chosen.append("north")
 
@@ -169,15 +182,16 @@ def park():
             
             rusure = input("There isn't much to see here. Do you still want to explore the area? ").lower()
 
-            while rusure != "yes" and "no":
-                rusure = input("Please state a yes or no answer.")
+            while rusure not in ["yes","no"]:
+                rusure = input("Please state a yes or no answer. ")
 
             if rusure == "no":
                 time -= 0.5
                 print(f"You have {time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
+                continue
             
-            if rusure == "yes" and time > 0.5:
+            if rusure == "yes" and time >= 0.5:
                 time -= 0.5
                 print("After further inspection of the rocket, you find a small panel of the rocket where the exterior was ripped off.")
                 print("Hidden behind one of the wall panels, you find a small keycard, with a blue stripe and the letters Ξ Π Λ Γ")
@@ -191,14 +205,15 @@ def park():
 
                 going_up = input("Do you want to climb the rocket, knowing full well of the consequences? ").lower()
 
-                while going_up != "yes" and "no"
+                while going_up not in ["yes","no"]:
                     going_up = input("No time to spare. The rocket looms overhead. Do you climb it? ")
                 
                 if going_up == "no":
                     print(f"you have {time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
+                    continue
                 
-                if going_up == "yes":
+                if going_up == "yes" and time >= 5.5:
                     print("You slowly go up the rocket, being careful of each step.")
                     print("Suddenly a whistle pierces the silence of the park. You've been spotted!")
                     print("You scramble up the rocket faster. You are now making plenty of noise. It seems you've caught the attention of the whole city.")
@@ -210,49 +225,386 @@ def park():
                     print("The hydraulics reveal an opening, and you quickly stumble through. In your haste, your flashdrive gets caught on the metal and falls.")
                     del tools["flashdrive"]
                     print("You can't think about the lost flashdrive however. Let's hope nothing important was on there.")
+                    stars += 1
                     
-                    #rocket()
+                    time_removed = base(time)
+                    time -= time_removed
+                    time -= 5.5
+                    
+                    print("...The bathroom.")
+                    print("This must be the unknown building on the south side. Go figure.")
+
+                    chosen.append("south")
+                
+                    print(f"you have {time} hours left.")
+                    section = input("Which area would you like to explore next? ").lower()
+                    continue
+            
+            else:
+                print("You do not have enough time to explore this area. Please choose a different section")
+                section = input("Which area would you like to explore next? ").lower()
+                continue
+
+        if section == "south":
+            print(chosen)
+            
+            chosen.append("south")
+            
+            print("The building seems rather small as you approach")
+            print("It has no windows and has a single door on the side.")
+            print("You have no idea what's in the building should you go in.")
+
+            going_in = input("Do you enter the building? ").lower()
+
+            while going_in not in ["yes","no"]:
+                going_in = input("Are you going into the building or not? ")
+
+            if going_in == "no":
+                time -= 0.5
+                print(f"You have {time} hours left.")
+                section = input("Which area would you like to explore next? ").lower()
+                continue
+            
+            if going_in == "yes" and time >= 0.5:
+                time -= 0.5
+                print("You enter the building and look around.")
+                print("It seems to be an abandoned bathroom. Everything looks dirty and broken.")
+                print("You look around, peeking in each stall. One of them still had some human excrement that who knows how long was there.")
+                print("Behind the last stall, there is a door. You're not sure what's behind it. Or who.")
+
+                entering = input("Do you go in? ").lower()
+
+                while entering not in ["yes","no"]:
+                    entering = input("Do you enter or do you not? ").lower()
+                
+                if entering == "no":
+                    print(f"you have {time} hours left.")
+                    section = input("Which area would you like to explore next? ").lower()
+                    continue
+                
+                if entering == "yes" and time >= 5.5:
+                    stars += 1
+
+                    time_removed = base(time)
+                    time -= time_removed
+                    time -= 5.5
+
+                    print("...The rocket.")
+                    print("Who knew the rocket would hold a secret exit. Go figure.")
+
+                    chosen.append("north")
+
+                    print(f"you have {time} hours left.")
+                    section = input("Which area would you like to explore next? ").lower()
+                    continue
                 
             else:
-                print("You do not have enough time to explore the area. Please choose a different section")
+                print("You do not have enough time to explore this area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
-    
-    if time == 0:
-        print("You have ran out of time for today. You must return to the hotel immediately.")
-        print(f"Good night Agent {agent_name}. Your next instructions will be sent tomorrow morning.")
-         
-def rocket()
+                continue
 
-def Hagenstade(score, hours):
+        if section == "west":
+            print(chosen)
+            
+            chosen.append("west")
+
+            print("Although the Translutian people hate any association with American culture, they do agree that the sport of basketball is not so bad.")
+            print("Translutia is home to some of the greatest basketball players of all time, and the people here take the sport very seriously.")
+            print("To that extent, basketball is labelled as the official sport of the country, making it very odd why no one is playing right now.")
+            print("I would proceed with caution. A lack of populous is generally not a good sign, especially for a scout such as yourself.")
+            print("The basketball court looks very derelict and abandoned. The court has cracks running through it with weeds covering the court.")
+            print("The lines are barely visible and the hoops are broken and lopsided.")
+            print("Still, there is a half-deflated ball lying in the field next to the court.")
+            print("Maybe something will happen later...")
+
+            playing = input("Do you want to wait for something to happen or move on? ").lower()
+
+            while playing not in ["wait","move on"]:
+                print("I suppose you're going to wait then.")
+                playing = input("If not, please decide if you are going to wait or move on.").lower()
+            
+            if playing == "move on":
+                time -= 0.5
+                print(f"You have {time} hours left.")
+                section = input("Which area would you like to explore next? ").lower()
+                continue
+            
+            if playing == "wait" and time >= 1.5:
+                time -= 1.5
+                print("You wait for an hour and a half, and nothing happens.")
+                print("Just as you start to leave a loud noise comes around the block. It seems to be a car.")
+                print("It approaches and parks at the parking lot. Five guys exit the car and start walking towards the court. One has a basketball in hand.")
+                print("The first one stops, then points at you. Everyone else stops as well. Maybe he is the leader. He seems confused.")
+                print("Fortunately, your training in acting the part and disguise will help you in this situation.")
+                print('"Hello friends!" you say. "Im afraid that Im lost. I am a tourist here from the nearby Poldrack Islands."')
+                print('"What are you doing here?" one asks.')
+                print('"Im trying to learn more about our neighboring countries. I thought I would visit Translutia myself and experience the culture.')
+                print('"I dont know, sir." the leader says. "I dont remember learning about the Poldrack Islands."')
+                print("Silently, you curse at yourself. But you have handled these stressful situations before.")
+                print('"Listen," you say. "Your leader Rotendero has invited a representative of my country to visit for a formal dinner gathering."')
+                print('"I need help finding where we might meet," you continue.')
+                print('"Why should we help you?" he asks.')
+                print('"You dont want to help a big ambassador from a foreign nation?"')
+                print('"Tell you what." the leader says. "I challenge you to a pickup game of basketball. If you win, we will help you. If not, we will report you."')
+                print('"And why would I agree to that?" you respond.')
+                print('"Because if not, the authorities will put you in prison, which is famously lethal."')
+
+                do_you_play = input("Do you play with the group or run away and risk capture? ").lower()
+
+                while do_you_play not in ["play","run away"]:
+                    do_you_play = input("They are closing in. You need to make a decision and fast. ").lower()
+
+                if do_you_play == "run away":
+                    
+                    time = run_away(time)
+
+                if do_you_play == "play" and time >= 2.0:
+                    print('"Wait," you say aloud. "Ill play."')
+                    print("The leader smiles. He gestures to the court. You walk onto the court, and see the team of five facing you.")
+                    print('"What is this, a 1 v 5?" you ask. The leader only smiles.')
+                    print('"You get ball first," he said. "First to sink three shots wins." He throws the ball at you, which you awkwardly catch.')
+                    print("You start dribbling the ball. Two of the guys rush at you, you dodge them both and run right at the basket.")
+                    print("Just as you were about to throw the ball in, the ball is stolen from your hand. The leader smirks as he runs to the other end and makes the shot.")
+                    print('"Thats 1 - 0," he said.')
+                    print('"Thats a foul," you replied. Theres just no winning with these guys. It seems playing dirty is the name of the game.')
+                    print("You start the second round with a burst of energy. You round around three guys before one of them jumps on your back and drags you back.")
+                    print('The leader grabs the ball and scores another point. "One more and we win," he grinned.')
+                    print("You know you need a new strategy.")
+
+                    what_strategy = input("Should you try and make a two-point shot or should you make a slam dunk? ").lower()
+
+                    while what_strategy not in ["two-point shot","slam dunk"]:
+                        what_strategy = input("You need a plan of action. Make sure you're writing the hyphen between two and point. ").lower()
+
+                    if what_strategy == "slam dunk":
+                        print("You grab the ball, and begin the round. You dribble around two guys and reach the box.")
+                        print("You jump up, arcing your hand and the ball into the basket, when a big shove from the side throws you off balance.")
+                        print("You collapse to the floor as the leader dribbles the ball and scores for the third time.")
+                        print('"Thats a foul. Its my free throws now," you yell angrily.')
+                        print('The leader laughs. "Well, since you didnt win, I guess that means the authorities are getting a new inmate."')
+                        print('"I dont think so," you respond.')
+
+                        time = run_away(time)
+                    
+                    if what_strategy == "two-point shot":
+                        print("You begin the round. Three guys close in. You dodge the first two, and shoot the ball before the third reaches you.")
+                        print("The ball arcs over the players, and sinks right into the basket.")
+                        print('"2 - 2," you smile. You scoring has given you a massive boost of confidence.')
+                        print("The leader starts the round, and tries to fake a pass. You, being an intelligent agent, you see the deception, and snag the ball.")
+                        print("You run up to the opposition basket and make the shot. Everyone watches with bated breath as the ball bounces once, twice, and ...")
+                        print("")
+                        print("...sinks into the basket")
+                        print("")
+                        print("You smile and look at the leader. He is furious. The rest of the group is livid too.")
+                        print('"You owe me some information, man. That will help me most,"you say.')
+                        print('"What do you want to know," the leader says begrudgingly. You appreciate that he sticks to his word.')
+                        print('"Any information on the parade would be nice," you say.')
+                        print('"Information how?"')
+                        print('"I want to know if there is anything strange going on with the parade tomorrow. I dont want the celebrations to be cut short early."')
+                        print('"I dont follow."')
+                        print('"Tell me what you know kid. I know youre hiding something."')
+                        print('He sighs. "Fine, all I know is that a secret organization calling themselves The Agenda is planning on setting a trap for some supposed American spies."')
+                        print('"Where?"')
+                        print('"In front of the national bank. You cant miss it."')
+                        print('"Youve been of great assistance," you say. You watch as the group walk back to their car and drive away.')
+                        print("You've just gained some very valuable information that may just save this mission.")
+
+                        time -= 2
+
+                        print(f"You have {time} hours left.")
+                        section = input("Which area would you like to explore next? ").lower()
+                        continue
+
+            else:
+                print("You do not have enough time to explore this area. Please choose a different section")
+                section = input("Which area would you like to explore next? ").lower()
+                continue
+        
+        if section == "east":
+            print(chosen)
+
+            chosen.append("east")
+
+        if section == "central":
+            print(chosen)
+
+    if time <= 0:
+        print("You have ran out of time for today. You must return to the hotel immediately.")
+        print(f"Good night agent. Your next instructions will be sent tomorrow morning.")
+         
+def base(time):
+    """Extension to park() function"""
+
+    time = 0
+    
+    print("You enter into a dimly-lit chamber.")
+    print("You quickly move to the side of the wall. You put the binoculars to your eyes and turn on night-vision.")
+    print("You seem to be in a small storage room. On the wall lay a crowbar and a hammer.")
+    print("A table by the corner contains some rounds of ammunition and some newspapers in a foreign language.")
+    print("A flashlight and a matchbox lie on the floor next to a broken tool box containing some nails and screws, and a screwdriver.")
+    print("There is a mop and a janitorial outfit to the side. Next to it is a small backpack, which is empty.")
+    print("On the far wall is a door. You peek out the door and see empty hallways with flickering lights.")
+    print("Just as you are about to go out for a better look, you hear some voices of people speaking.")
+    print("You crouch in the shadows and watch as two suited men walk past the closet and around a corner.")
+    print("If you go out there like this and get caught, it will surely mean trouble. Maybe something in the room can help you...")
+    print("You immediately go to the janitor's outfit and put it on. Blending in is better than sneaking around.")
+    print("You pick up the backpack. There's enough room in there for one item you saw above.")
+
+    grabbed_item = input("Which item do you pick up and put in your bag? ").lower()
+
+    while grabbed_item not in ["matches,", "flashlight", "crowbar", "hammer","ammunition","newspapers","nails and screws","screwdriver"]:
+        print("You didn't see that object in the room.")
+        grabbed_item = input("Choose an object you did see before. ").lower()
+    
+    if grabbed_item == "crowbar":
+        story_items["crowbar"] = 1
+    elif grabbed_item == "matches":
+        story_items["matches"] = 5
+    elif grabbed_item == "flashlight":
+        story_items["flashlight"] = 1
+    elif grabbed_item == "hammer":
+        story_items["hammer"] = 1
+    elif grabbed_item == "ammunition":
+        story_items["ammunition"] = 3
+    elif grabbed_item == "newspapers":
+        story_items["newspapers"] = 2
+    elif grabbed_item == "nails and screws":
+        story_items["nails"] = 4
+        story_items["screws"] = 5
+    elif grabbed_item == "screwdriver":
+        story_items["screwdriver"] = 1
+    
+    print(f"You place the bag and your {grabbed_item} in the janitor's cart and you walk out of the closet all dressed up.")
+    print("You place a bug in your pocket and set it to record. You can send any of the dialogue to the Egg for further analysis.")
+    print("You walk down the hallway and turn at the corner the two men turned at.")
+    print("There is one big door in front of you. You quietly enter the room.")
+    print("The room is bright white with crates and boxes lining the edges of the walls. In the middle, the two suited men are talking with another man.")
+    print("The man wore dark glasses and had a headset on. He nodded to the other men, then turned and walked into a back room.")
+    print("The two other men then grab a box from the side, and empty it out.")
+    print("They sort through the objects before finding something, which they quickly pocketed.")
+    print("They then both followed the man into the back room.")
+    print("You quickly go up to the emptied box and inspect the contents.")
+    print("Old newspapers and crumpled papers seem to be the only things there.")
+
+    inspect_further = input("Do you wish to inspect the contents further? ").lower()
+    
+    if inspect_further == "yes":
+        time += 1.0
+        print("You inspected the papers further, but you could not find anything else of importance.")
+    
+    print("You enter the back room, which was much more dimly lit, and hide behind a trash can.")
+    print("The men are talking to a woman now. She had a very harsh tone and paced around the men. She seemed to be a general of sorts.")
+    print('Suddenly, you hear "General, the strike team is in position."')
+    print("You gasp, surprised at the sound of English in a country that hates any languages apart from its own.")
+    print("The two men and the woman whip around to your location. You know you've been caught.")
+    
+    what_now = input("Do you run, or give up? ").lower()
+
+    while what_now not in ["run","give up"]:
+        what_now = input("You can't dwell on this, they're approaching the can!")
+    
+    if what_now == "give up":
+        print("You can't give up. Giving up means mission failure. Run!")
+
+    print("You run out of the door, the two men chasing you.")
+    print("One of them grabs the backpack, but you manage to yank it back in your direction.")
+    print("You keep running. You run to the door to the rocket.")
+    print("IT'S LOCKED!!!")
+    print("You keep running, turning left and right at each corner.")
+    print("The sound of running boots fade behind you. You lost them.")
+    print("You open the door next to you, and close it.")
+    print("This new room has nothing special, except for a handgun on the side.")
+    print("On the other side of the room you see...")
+    print("")
+    print("SUNLIGHT!!!")
+    print("")
+    print("There is a door with a window looking out. You exit the door and find yourself in...") 
+    
+    return time
+
+def run_away(time):
+    """Park function west section running away result"""
+
+    print("You ditch the group and run away from the west end. They're chasing after you.")
+    print("The group splits up. One goes south, one goes north, and the other three follow you to the center circle.")
+    print("Being a little older than the group, they are quickly gaining ground.")
+    print("You know you have some tools at your disposal in addition to your martial arts background.")
+    print("You can't overpower them with combat alone. You'll need a tool to ward them off.")
+    print("With you, you brought:")
+    print("")
+
+    for keys in tools:
+        print(f" - {keys}")
+    
+    print("")
+
+    which_tool = input("Which tool are you going to use? ").lower()
+
+    while which_tool not in tools:
+        which_tool = input("Without tools, you will surely be captured. Pick one to use. ").lower()
+    
+    if which_tool == "phone":
+        print("You press the self-destruct button and count to two.")
+        print("Then, you quickly throw it behind you.")
+        print("A large and loud explosion sounds behind you and you are thrown forward.")
+        print("You turn around and see...well, better not look too long. You keep running forward and exit out of the park.")
+        print("You have some Translutian blood on your hands now. This was not how the mission was meant to go down.")
+
+        del tools["phone"]
+
+        time = 0
+
+        return time
+    
+    print(f"You pull out the {which_tool} from your backpack.")
+    print("You stop, turn around, and throw it at the closest person.")
+    print(f"The {which_tool} hits him square on the nose and he collapses to the floor.")
+    print("You keep running toward the exit. One stays behind to tend to their friend. The leader chases you down.")
+    print("Just as you exit the center oval, a hand grabs the back of your collar. Instinctively, you spin around and push the leader away.")
+    print("The leader retaliates with a punch to the gut.") 
+    print("As you're wheezing from the blow, you see the two guys who split up to the north and south of the park running back. Its now or never.")
+    print("You pick yourself up and perform a vicious uppercut to the leader's jaw. You follow up with an elbow hit to the chest.")
+    print("The leader goes down like a sack of potatoes. You run the remaining few paces out of the exit.")
+    print("The mission needed to be smoother. You're going to have to do better next time.")
+
+    del tools[which_tool]
+    
+    time = 0
+
+    return time
+
+def Hagenstade(hour_star_input):
     """Sequence for player"""
 
-    if hours == 73:
-        print("The parade will be held in three days, and begins at 09:00. The time right now is 08:00. That leaves you with 73 hours.")
+    if hour_star_input.hours == 49:
+        print("The parade will be held in two days, and begins at 09:00. The time right now is 08:00. That leaves you with 73 hours.")
         print("Until then, explore the area, collect intel, and gain skills and tools to help you in Translutia.")
         print("While you do explore Hagenstade, be wary of the curfew, which is at 20:00 sharp. Anyone not in their house by curfew will be arrested.")
-        print("Hagenstade has five major locations worth investigating. Each one will take a day of your time, so make sure to choose wisely. You can only visit three before the parade.")
+        print("Hagenstade has three major locations worth investigating. Each one will take a day of your time, so make sure to choose wisely. You can only visit three before the parade.")
         print("Each location will be patrolling with guards and police. However, each location has differing security measures and officers.")
-        print("The five locations are as follows, in increasing security levels: the park, the train station, the port, the tallest building, and the national bank.")
+        print("The three locations are as follows, in increasing security levels: the park, the port, and the national bank.")
         print("The building and the bank offer the most to gain, but also pose the most risk. We do not need to remind you that capture and arrest is not an option.")
         print("Your capture puts the whole operation at risk. The GSS trusts you to make the right decisions. Other than that, your time is yours.")
 
-        first_loc = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
+        hour_star_input.choice = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
 
-        while first_loc not in ["park", "train station", "port", "building", "bank", "tallest building", "national bank"]:
-            first_loc = input("Please choose one of the five locations. You only have a limited time to explore. ").lower()
+        while hour_star_input.choice not in ["park", "port", "bank", "nationalbank"]:
+            hour_star_input.choice = input("Please choose one of the four locations. You only have a limited time to explore. ").lower()
 
-        hours = locations(first_loc, hours)
+        locations(hour_star_input)
 
-def locations(choice, hours):
+
+def locations(hour_star_choice_input):
     """To be used with Hagenstade function for ease of use"""
 
-    if choice == "park":
-        hours -= 24
-        park()
-        return hours
+    if hour_star_choice_input.choice == "park":
+        hour_star_choice_input.hours -= 24
+        hour_star_choice_input.stars = park(hour_star_choice_input.stars)
+        
 
 def main():
-    #Introductory Procedure
+    """Introductory Procedure"""
+
     ##(3.0)
     print("")
     print("")
@@ -290,8 +642,6 @@ def main():
     ##(0.75)
 
     #First Action Variables
-    hours = 73
-    score = 0
 
     command_1 = [
         f"Agent {agent_name}.",
@@ -304,7 +654,7 @@ def main():
         f"    The parade will provide perfect cover for the senior team.",
         f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
         f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
-        f"    The senior team will arrive in two days. The parade will be the day after.",
+        f"    The senior team will arrive in tomorrow. The parade will be the day after.",
         f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
         f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.",
         f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.",
@@ -313,7 +663,9 @@ def main():
 
     commands(command_1)
 
-    hours = Hagenstade(score, hours)
+    main_inputs = Location_Input()
+
+    Hagenstade(main_inputs)
 
 if __name__ == "__main__":
     main()
