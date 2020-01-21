@@ -2,12 +2,12 @@
 import random
 import sys
 import time
-#import pygame
+import pygame
 
 tools = {
     'binoculars': {
         'quantity': 1,
-        'uses': ['zoom_in', 'night_vision', 'thermal_vision']
+       'uses': ['zoom_in', 'night_vision', 'thermal_vision']
     },
     'bug' :  {
         'quantity': 3,
@@ -172,7 +172,6 @@ def park(stars):
                 section = input(f"You have already chosen to go {section}. Please choose another section. ").lower()
 
         if section == 'north':
-            print(chosen)
             
             chosen.append("north")
 
@@ -246,7 +245,6 @@ def park(stars):
                 continue
 
         if section == "south":
-            print(chosen)
             
             chosen.append("south")
             
@@ -304,8 +302,7 @@ def park(stars):
                 continue
 
         if section == "west":
-            print(chosen)
-            
+
             chosen.append("west")
 
             print("Although the Translutian people hate any association with American culture, they do agree that the sport of basketball is not so bad.")
@@ -421,9 +418,20 @@ def park(stars):
                 continue
         
         if section == "east":
-            print(chosen)
 
             chosen.append("east")
+
+            sequence = 'door'
+
+            if sequence == 'door':
+                door_unlocking()
+
+                while True:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            sys.exit()
+                        else:
+                            break
 
         if section == "central":
             print(chosen)
@@ -573,6 +581,56 @@ def run_away(time):
 
     return time
 
+def door_unlocking():
+    """'Function that unlocks doors'"""
+
+    pygame.init()
+
+    screen = pygame.display.set_mode( (1200, 650) )
+
+    font = pygame.font.SysFont("Courier New", 100)
+
+    codes = {
+        'door': ['garden_1', 'garden_2', 'statue_1']
+    }
+    
+    print("You are approaching a panel.")
+
+    check_code = codes['door']
+    if "garden_1" in check_code:
+        text1 = font.render("L T X G", True, (225, 225, 225))
+        text2 = font.render("S D P R", True, (225, 225, 225))
+        text3 = font.render("M F E A", True, (225, 225, 225))
+        text4 = font.render("U J Q K", True, (225, 225, 225))
+        xpos = 50
+        ypos = 50
+
+        print("It is partially hidden away in the bushes. It was a stroke of luck that you were able to spot it.") 
+        print("There is a 4x4 keypad on the side with various letters. There is no clear pattern to it.")
+        print("Maybe the decoder will help...")
+        
+        screen.blit(text1, (xpos, ypos))
+        ypos += 50
+        screen.blit(text2, (xpos, ypos))
+        ypos += 50
+        screen.blit(text3, (xpos, ypos))
+        ypos += 50
+        screen.blit(text4, (xpos, ypos))
+        pygame.display.flip()
+        
+    elif check_code == 'garden_2':
+        text1 = font.render("L T X G", True, (225, 225, 225))
+        text2 = font.render("S D P R", True, (225, 225, 225))
+        text3 = font.render("M F E A", True, (225, 225, 225))
+        xpos = 50
+        ypos = 50
+
+
+    elif check_code == 'statue_1':
+        pass
+    else:
+        print("You do not have the correct decoder to try this door. Find the encryption and try again.")
+
 def Hagenstade(hour_star_input):
     """Sequence for player"""
 
@@ -669,52 +727,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-"""pygame.init()
-
-screen = pygame.display.set_mode( (1200, 650) )
-
-font = pygame.font.SysFont("Courier New", 250)
-
-codes = {
-    'door': ['compound1', 'compound2']
-}
-
-sequence = 'door'
-
-def door_unlocking():
-    """'Function that unlocks doors'"""
-
-    print("You are approaching a door.")
-
-    check_code = codes['door']
-    if 'compound1' == check_code:
-        text1 = font.render("L T X G", True, (225, 225, 225))
-        text2 = font.render("L T X G", True, (225, 225, 225))
-        text3 = font.render("L T X G", True, (225, 225, 225))
-        text4 = font.render("L T X G", True, (225, 225, 225))
-        xpos = 50
-        ypos = 50
-
-        print("It seems to be a strong metal door.") 
-        print("There is a 4x4 keypad on the side with a wide assortment of symbols, letters, and numbers.")
-        print("Maybe the decoder will help...")
-        
-        screen.blit(text1, (xpos, ypos))
-        ypos += 250
-        screen.blit(text2, (xpos, ypos))
-        ypos += 250
-        screen.blit(text3, (xpos, ypos))
-        ypos += 250
-        screen.blit(text4, (xpos, ypos))
-        pygame.display.flip()
-        
-    elif check_code == 'compound2':
-        Filler
-    elif check_code == 'compound3':
-        Filler
-    else:
-        print("You do not have the correct decoder to try this door. Find the encryption and try again.")
-
-while True:"""
 
