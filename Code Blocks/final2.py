@@ -4,6 +4,7 @@ import sys
 import time
 import pygame
 
+#Variables
 tools = {
     'binoculars': {
         'quantity': 1,
@@ -907,15 +908,14 @@ def Hagenstade(hour_star_input):
 
         locations(hour_star_input)
 
-
 def locations(hour_star_choice_input):
     """To be used with Hagenstade function for ease of use"""
 
     if hour_star_choice_input.choice == "park":
         hour_star_choice_input.hours -= 24
         hour_star_choice_input.stars = park(hour_star_choice_input.stars)
-        
 
+#Main / Initial Function        
 def main():
     """Introductory Procedure"""
 
@@ -994,3 +994,7 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+
+
+#I just wanted to reach 1000
