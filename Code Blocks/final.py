@@ -39,7 +39,7 @@ skills: {
 class Location_Input():
     """Will take arguments from location function and return changed values"""
 
-    hours = 49
+    hours = 25
     choice = ""
     stars = 0
 
@@ -421,10 +421,59 @@ def park(stars):
 
             chosen.append("east")
 
-            sequence = 'door'
+            print("The dried fountain lies to the left. The gardens are on the right.")
 
-            if sequence == 'door':
-                door_unlocking()
+            which_side = input("Which side do you go to? ").lower()
+
+            while which_side not in ["fountain","gardens","left","right"]:
+                which_side = input(f"{which_side} is not found on the east side.").lower()
+            
+            if which_side == "gardens" or which_side == "right":
+                print("The garden seems gray and wilted as you enter through the hedges.")
+                print("It is evident that no one has been here to maintain the gardens in a very long time.")
+                print("Suddenly, you spot a bag hidden in one of the hedges. When you reach out to grab it, a laser starts scanning your arm.")
+                print("Startled, you jump back. You take a closer look and see a whole network of lasers, cameras, and microphones.")
+                print("The bag, however, is beckoning for it to be opened and exhumed.")
+
+                grab_bag = input("Do you grab the bag, or leave it alone? ").lower()
+
+                while grab_bag not in ["grab the bag", "leave it alone"]:
+                    grab_bag = input("The bag still beckons. Do you grab the bag or leave it alone? ").lower()
+                
+                if grab_bag == "grab the bag":
+                    print("Your hand darts into the hedges, and you snatch the bag.")
+                    print("The lasers seem to capture the contours of your arm. Oh well, you can't dwell on it.")
+                    print("You open the bag, and out falls three pieces of paper. They are all grids with varying numbers and letters.")
+                    print("A loud bang is heard, and the hedges begin to move and shift. The entrance closes behind you.")
+                    print("You move into the new area and find two paths. One on the left and one on the right.")
+
+                    which_path = input("Which path do you take? ").lower()
+                    
+                    while which_path not in ["left","right"]:
+                        which_path = input("You can't go straight. Choose right or left. ").lower()
+                    
+                    if which_path == "left":
+                        decoder = 'garden_1'
+                    
+                    if which_path == "right":
+                        decoder = 'garden_2'
+                    
+                    door_unlocking(decoder)
+
+                    while True:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                sys.exit()
+                            else:
+                                break
+                
+            if which_side == "fountain" or which_side == "left":
+                print("The dried fountain has stains of green and black. Leaves are scattered in the basin.")
+                print("It is clear no one has taken care of the fountain in years.")
+
+                decoder = 'statue_1'
+
+                door_unlocking(decoder)
 
                 while True:
                     for event in pygame.event.get():
@@ -581,73 +630,122 @@ def run_away(time):
 
     return time
 
-def door_unlocking():
+def door_unlocking(code):
     """'Function that unlocks doors'"""
 
     pygame.init()
 
-    screen = pygame.display.set_mode( (1200, 650) )
-
     font = pygame.font.SysFont("Courier New", 100)
-
-    codes = {
-        'door': ['garden_1', 'garden_2', 'statue_1']
-    }
     
     print("You are approaching a panel.")
 
-    check_code = codes['door']
-    if "garden_1" in check_code:
-        text1 = font.render("L T X G", True, (225, 225, 225))
-        text2 = font.render("S D P R", True, (225, 225, 225))
-        text3 = font.render("M F E A", True, (225, 225, 225))
-        text4 = font.render("U J Q K", True, (225, 225, 225))
+    if code == "garden_1":
+
+        screen = pygame.display.set_mode( (525, 500) ) 
+
+        textL = font.render("L T X G", True, (225, 225, 225))
+        textS = font.render("S D P R", True, (225, 225, 225))
+        textM = font.render("M F E A", True, (225, 225, 225))
+        textU = font.render("U J Q K", True, (225, 225, 225))
         xpos = 50
         ypos = 50
 
         print("It is partially hidden away in the bushes. It was a stroke of luck that you were able to spot it.") 
+        print("There is a big rhombus on the plaque. It has an arrow on the right side.")
         print("There is a 4x4 keypad on the side with various letters. There is no clear pattern to it.")
         print("Maybe the decoder will help...")
         
-        screen.blit(text1, (xpos, ypos))
-        ypos += 50
-        screen.blit(text2, (xpos, ypos))
-        ypos += 50
-        screen.blit(text3, (xpos, ypos))
-        ypos += 50
-        screen.blit(text4, (xpos, ypos))
+        screen.blit(textL, (xpos, ypos))
+        ypos += 100
+        screen.blit(textS, (xpos, ypos))
+        ypos += 100
+        screen.blit(textM, (xpos, ypos))
+        ypos += 100
+        screen.blit(textU, (xpos, ypos))
         pygame.display.flip()
+
+        rhombus = input("What is the code to open the box? ").upper()
+
+        if rhombus == "RAQJMSTX":
+            print("The box clicks open!")
         
-    elif check_code == 'garden_2':
-        text1 = font.render("L T X G", True, (225, 225, 225))
-        text2 = font.render("S D P R", True, (225, 225, 225))
-        text3 = font.render("M F E A", True, (225, 225, 225))
+    elif code == 'garden_2':
+
+        screen = pygame.display.set_mode( (400, 400) )
+
+        text8 = font.render(str("8 9 1"), True, (225, 225, 225))
+        text3 = font.render(str("3 6 7"), True, (225, 225, 225))
+        text2 = font.render(str("2 4 5"), True, (225, 225, 225))
         xpos = 50
         ypos = 50
 
+        print("The panel is right at your feet. A big circle is imprinted in the center. There is downward arrow on the left endpoint.")
+        print("There is a 3x3 keypad with digits 1-9. There is no clear pattern.")
+        print("maybe the decoder will help.")
 
-    elif check_code == 'statue_1':
-        pass
+        screen.blit(text8, (xpos, ypos))
+        ypos += 100
+        screen.blit(text3, (xpos, ypos))
+        ypos += 100
+        screen.blit(text2, (xpos, ypos))
+        pygame.display.flip()
+
+        circle = input("What is the code to open the box? ").lower()
+        
+        if circle == "32457198":
+            print("The box clicks open!")
+
+    elif code == 'statue_1':
+       
+        screen = pygame.display.set_mode( (650, 650) )
+       
+        text_1 = font.render("~ - ~ - ~", True, (225, 225, 225))
+        text_2 = font.render("[ + = - ]", True, (225, 225, 225))
+        text_3 = font.render("< ( * ) >", True, (225, 225, 225))
+        text_4 = font.render("! $ ^ & ?", True, (225, 225, 225))
+        text_5 = font.render("_ | _ | _", True, (225, 225, 225))
+        xpos = 50
+        ypos = 50
+
+        print("The panel is hidden at the base of the fountain. It has the shape of an X inscribed onto it.")
+        print("There is an arrow at the top right and bottom right of the X going towards the center. A small 1 is next to the top right arrow.")
+        print("There is a 5x5 keypad with radom symbols next to the plaque.")
+        print("Maybe the decoder will help...")
+
+        screen.blit(text_1, (xpos, ypos))
+        ypos += 100
+        screen.blit(text_2, (xpos, ypos))
+        ypos += 100
+        screen.blit(text_3, (xpos, ypos))
+        ypos += 100
+        screen.blit(text_4, (xpos, ypos))
+        ypos += 100
+        screen.blit(text_5, (xpos, ypos))
+        pygame.display.flip()
+
+        x_symbol = input("What is the correct code to open the box? ").lower()
+
+        if x_symbol == "~-*$__&*+~":
+            print("The box clicks open!")
+
     else:
         print("You do not have the correct decoder to try this door. Find the encryption and try again.")
 
 def Hagenstade(hour_star_input):
     """Sequence for player"""
 
-    if hour_star_input.hours == 49:
-        print("The parade will be held in two days, and begins at 09:00. The time right now is 08:00. That leaves you with 73 hours.")
+    if hour_star_input.hours == 25:
+        print(f"The parade will go on tomorrow, and begins at 09:00. The time right now is 08:00. That leaves you with {hour_star_input.hours} hours.")
         print("Until then, explore the area, collect intel, and gain skills and tools to help you in Translutia.")
         print("While you do explore Hagenstade, be wary of the curfew, which is at 20:00 sharp. Anyone not in their house by curfew will be arrested.")
-        print("Hagenstade has three major locations worth investigating. Each one will take a day of your time, so make sure to choose wisely. You can only visit three before the parade.")
-        print("Each location will be patrolling with guards and police. However, each location has differing security measures and officers.")
-        print("The three locations are as follows, in increasing security levels: the park, the port, and the national bank.")
-        print("The building and the bank offer the most to gain, but also pose the most risk. We do not need to remind you that capture and arrest is not an option.")
+        print("We have received reports that the park in Hagenstade has had some recent activity worth investigating.")
+        print("We don't need to remind you that arrest or capture is not an option.")
         print("Your capture puts the whole operation at risk. The GSS trusts you to make the right decisions. Other than that, your time is yours.")
 
-        hour_star_input.choice = input("Where would you like to go first? (exclude the 'the' in your answer)  ").lower()
+        hour_star_input.choice = input("Please input 'park' to begin the game. ").lower()
 
         while hour_star_input.choice not in ["park", "port", "bank", "nationalbank"]:
-            hour_star_input.choice = input("Please choose one of the four locations. You only have a limited time to explore. ").lower()
+            hour_star_input.choice = input("Please input 'park'. You only have a limited time to explore. ").lower()
 
         locations(hour_star_input)
 
@@ -712,11 +810,11 @@ def main():
         f"    The parade will provide perfect cover for the senior team.",
         f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
         f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
-        f"    The senior team will arrive in tomorrow. The parade will be the day after.",
+        f"    The senior team has already arrived and is getting ready. The parade will begin tomorrow.",
         f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
         f"    However, we urge you to be wary. The dictator most surely knows you are in the country, and they will be trying to put a stop to the mission.",
         f"    Be suspicious of everything. You will know something is ours if we mention it beforehand, or a decrypted message reads GSS.",
-        f"    Good luck agent. Your first package will be dropped tomorrow."
+        f"    Good luck agent. Godspeed."
         ]
 
     commands(command_1)
