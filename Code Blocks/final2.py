@@ -976,7 +976,7 @@ def main():
         f"    We need you to scout the parade that will be held there. ",
         f"    The parade begins in Hagenstade, and ends at the capital, Rotendale.",
         f"    The parade will provide perfect cover for the senior team.",
-        f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound."
+        f"    The senior team will then infiltrate the parade, and then enter Rotendero's compound.",
         f"    You are there to make sure no one sabotages the parade, and intervenes in our plans. ",
         f"    The senior team has already arrived and is getting ready. The parade will begin tomorrow.",
         f"    We will be sending you some packages as well. These packages contain valuable tools and information.",
