@@ -6,6 +6,7 @@ import pygame
 
 #Variables
 tools = {
+    """Tools that will be used throughout game"""
     'binoculars': {
         'quantity': 1,
        'uses': ['zoom_in', 'night_vision', 'thermal_vision']
@@ -28,9 +29,12 @@ tools = {
     }
 }
 
-story_items = {}
+story_items = {
+    """Will have some story elements added to it"""
+}
 
 skills: {
+    """Just a list of skills that the player will have"""
     'espionage': ['follow', 'record', 'plant'],
     'technology': ['decrypt', 'encrypt', 'storage'],
     'combat': ['hand_to_hand', 'firearm']
@@ -43,8 +47,10 @@ class Location_Input():
     hours = 25
     choice = ""
     stars = 0
+    time = 10
+    decoder = ""
 
-#Functions
+#Functions (In order of use, except for main, which usually goes last)
 def code_name():
     """Takes the name input from user and returns code name"""
 
@@ -147,12 +153,45 @@ def commands(command):
     for items in command:
         print(items)
 
-def park(stars):
+def Hagenstade(hour_star_input):
+    """Takes initial values from class and inputs into park function"""
+
+    if hour_star_input.hours == 25:
+        print(f"The parade will go on tomorrow, and begins at 09:00. The time right now is 08:00. That leaves you with {hour_star_input.hours} hours.")
+        print("")
+        print("Until then, explore the area, collect intel, and gain skills and tools to help you in Translutia.")
+        print("")
+        print("While you do explore Hagenstade, be wary of the curfew, which is at 20:00 sharp. Anyone not in their house by curfew will be arrested.")
+        print("")
+        print("We have received reports that the park in Hagenstade has had some recent activity worth investigating.")
+        print("")
+        print("We don't need to remind you that arrest or capture is not an option.")
+        print("")
+        print("Your capture puts the whole operation at risk. The GSS trusts you to make the right decisions. Other than that, your time is yours.")
+        print("")
+        
+        hour_star_input.choice = input("Please input 'park' to begin the game. ").lower()
+
+        while hour_star_input.choice not in ["park", "port", "bank", "nationalbank"]:
+            hour_star_input.choice = input("Please input 'park'. You only have a limited time to explore. ").lower()
+
+        locations(hour_star_input)
+
+def locations(hour_star_choice_input):
+    """To be used with Hagenstade function for ease of use"""
+
+    if hour_star_choice_input.choice == "park":
+        hour_star_choice_input.hours -= 24
+        park(hour_star_choice_input)
+
+def park(stars_time_input):
     """Park location in Hagenstade"""
 
-    time = 10.0
+    #Set-up variables
+    stars_time_input.time = 10.0
     chosen = []
     
+    #Initial message
     print("You have arrived at Freedom Park.")
     print("") 
     print("Yes, I realize that it is an oxymoron to have a park named 'Freedom' in a dictatorship country. Don't ask about it.")
@@ -173,19 +212,21 @@ def park(stars):
     print("")
     print("Each section will take a different chunk of your time, so choose wisely.")
     print("")
-    #print("If you don't have any time to explore any other areas, but still have a little remaining, feel free to walk around the center for the remainder.")
-    #print("The center will not give any main story elements, but may offer a chance to gain new tools and skills.")
 
+    #Which section to go to first
     section = input("With all that said and done, which area would you like to explore first? ").lower()
 
     while section not in ["west" , "east" , "north" , "south"]:
         section = input("Choose one of the cardinal directions where each thing is located. ").lower()
     
-    while time > 0:
+    #Sets the time frame for the game
+    while stars_time_input.time > 0:
 
+        #Makes sure there is no doubling of locations to visit
         while section in chosen:
                 section = input(f"You have already chosen to go {section}. Please choose another section. ").lower()
 
+        #Northern Section
         if section == 'north':
             
             chosen.append("north")
@@ -197,23 +238,25 @@ def park(stars):
             print('A lone plaque behind the rocket reads, "Markareshi III Rocket. First rocket in failed nuclear weapons program."')
             print("")
             
+            #First opportunity to go back
             rusure = input("There isn't much to see here. Do you still want to explore the area? ").lower()
 
             while rusure not in ["yes","no"]:
                 rusure = input("Please state a yes or no answer. ")
 
             if rusure == "no":
-                time -= 0.5
-                print(f"You have {time} hours left.")
+                stars_time_input.time -= 0.5
+                print(f"You have {stars_time_input.time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
             
-            if rusure == "yes" and time >= 0.5:
-                time -= 0.5
+            if rusure == "yes" and stars_time_input.time >= 0.5:
+                stars_time_input.time -= 0.5
                 print("After further inspection of the rocket, you find a small panel of the rocket where the exterior was ripped off.")
                 print("")
                 print("Hidden behind one of the wall panels, you find a small keycard, with a blue stripe and the letters Ξ Π Λ Γ")
                 print("")
+                #Adds item relevant to story
                 story_items["keycard"] = 1
                 print("You continue to look around the rocket. You notice a little crack near the base of the mount.")
                 print("")
@@ -228,17 +271,18 @@ def park(stars):
                 print("Is it worth the mission if it's just a crack and not anything special?")
                 print("")
 
+                #Second opportunity to go back
                 going_up = input("Do you want to climb the rocket, knowing full well of the consequences? ").lower()
 
                 while going_up not in ["yes","no"]:
                     going_up = input("No time to spare. The rocket looms overhead. Do you climb it? ")
                 
                 if going_up == "no":
-                    print(f"you have {time} hours left.")
+                    print(f"you have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
                 
-                if going_up == "yes" and time >= 5.5:
+                if going_up == "yes" and stars_time_input.time >= 5.5:
                     print("You slowly go up the rocket, being careful of each step.")
                     print("")
                     print("Suddenly a whistle pierces the silence of the park. You've been spotted!")
@@ -261,26 +305,31 @@ def park(stars):
                     print("You can't think about the lost flashdrive however. Let's hope nothing important was on there.")
                     stars += 1
                     
-                    time_removed = base(time)
-                    time -= time_removed
-                    time -= 5.5
+                    #Sends to base function, which is continuation of story
+                    time_removed = base(stars_time_input.time)
+                    stars_time_input.time -= time_removed
+                    stars_time_input.time -= 5.5
                     
+                    #Returns from base function
                     print("")
                     print("...The bathroom.")
                     print("")
                     print("This must be the unknown building on the south side. Go figure.")
 
                     chosen.append("south")
-                
-                    print(f"you have {time} hours left.")
+
+                    #Chooses next section
+                    print(f"you have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
             
+            #If person does not have enough time but still chose to continue, then this sends them to a new section
             else:
                 print("You do not have enough time to explore this area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
-
+        
+        #Southern Section
         if section == "south":
             
             chosen.append("south")
@@ -292,19 +341,20 @@ def park(stars):
             print("You have no idea what's in the building should you go in.")
             print("")
 
+            #First opportunity to go back
             going_in = input("Do you enter the building? ").lower()
 
             while going_in not in ["yes","no"]:
                 going_in = input("Are you going into the building or not? ")
 
             if going_in == "no":
-                time -= 0.5
-                print(f"You have {time} hours left.")
+                stars_time_input.time -= 0.5
+                print(f"You have {stars_time_input.time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
             
-            if going_in == "yes" and time >= 0.5:
-                time -= 0.5
+            if going_in == "yes" and stars_time_input.time >= 0.5:
+                stars_time_input.time -= 0.5
                 print("You enter the building and look around.")
                 print("")
                 print("It seems to be an abandoned bathroom. Everything looks dirty and broken.")
@@ -314,23 +364,26 @@ def park(stars):
                 print("Behind the last stall, there is a door. You're not sure what's behind it. Or who.")
                 print("")
 
+                #Second opportunity to go back
                 entering = input("Do you go in? ").lower()
 
                 while entering not in ["yes","no"]:
                     entering = input("Do you enter or do you not? ").lower()
                 
                 if entering == "no":
-                    print(f"you have {time} hours left.")
+                    print(f"you have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
                 
-                if entering == "yes" and time >= 5.5:
+                if entering == "yes" and stars_time_input.time >= 5.5:
                     stars += 1
 
-                    time_removed = base(time)
-                    time -= time_removed
-                    time -= 5.5
+                    #Enters base function
+                    time_removed = base(stars_time_input.time)
+                    stars_time_input.time -= time_removed
+                    stars_time_input.time -= 5.5
 
+                    #Returns from base function
                     print("")
                     print("...The rocket.")
                     print("")
@@ -338,19 +391,23 @@ def park(stars):
 
                     chosen.append("north")
 
-                    print(f"you have {time} hours left.")
+                    #New section to choose
+                    print(f"you have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
-                
+            
+            #If person does not have enough time but still chose to continue, then this sends them to a new section
             else:
                 print("You do not have enough time to explore this area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
 
+        #Western Section
         if section == "west":
 
             chosen.append("west")
 
+            #Opening Exposition
             print("")
             print("Although the Translutian people hate any association with American culture, they do agree that the sport of basketball is not so bad.")
             print("")
@@ -369,6 +426,7 @@ def park(stars):
             print("Maybe something will happen later...")
             print("")
 
+            #First opportunity to go back
             playing = input("Do you want to wait for something to happen or move on? ").lower()
 
             while playing not in ["wait","move on"]:
@@ -376,13 +434,13 @@ def park(stars):
                 playing = input("If not, please decide if you are going to wait or move on.").lower()
             
             if playing == "move on":
-                time -= 0.5
-                print(f"You have {time} hours left.")
+                stars_time_input.time -= 0.5
+                print(f"You have {stars_time_input.time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
             
-            if playing == "wait" and time >= 1.5:
-                time -= 1.5
+            if playing == "wait" and stars_time_input.time >= 1.5:
+                stars_time_input.time -= 1.5
                 print("You wait for an hour and a half, and nothing happens.")
                 print("")
                 print("Just as you start to leave a loud noise comes around the block. It seems to be a car.")
@@ -418,6 +476,7 @@ def park(stars):
                 print('"Because if not, the authorities will put you in prison, which is famously lethal."')
                 print("")
 
+                #Second opportunity to go back
                 do_you_play = input("Do you play with the group or run away and risk capture? ").lower()
 
                 while do_you_play not in ["play","run away"]:
@@ -425,9 +484,10 @@ def park(stars):
 
                 if do_you_play == "run away":
                     
-                    time = run_away(time)
+                    #Action sequence
+                    stars_time_input.time = run_away(stars_time_input.time)
 
-                if do_you_play == "play" and time >= 2.0:
+                if do_you_play == "play" and stars_time_input.time >= 2.0:
                     print("")
                     print('"Wait," you say aloud. "Ill play."')
                     print("")
@@ -452,6 +512,7 @@ def park(stars):
                     print("You know you need a new strategy.")
                     print("")
 
+                    #Questions which path to take, of which there are two
                     what_strategy = input("Should you try and make a two-point shot or should you make a slam dunk? ").lower()
 
                     while what_strategy not in ["two-point shot","slam dunk"]:
@@ -472,7 +533,8 @@ def park(stars):
                         print('"I dont think so," you respond.')
                         print("")
 
-                        time = run_away(time)
+                        #Action sequence
+                        stars_time_input.time = run_away(stars_time_input.time)
                     
                     if what_strategy == "two-point shot":
                         print("")
@@ -515,17 +577,20 @@ def park(stars):
                         print("You've just gained some very valuable information that may just save this mission.")
                         print("")
 
-                        time -= 2
+                        stars_time_input.time -= 2
 
-                        print(f"You have {time} hours left.")
+                        #New section to choose
+                        print(f"You have {stars_time_input.time} hours left.")
                         section = input("Which area would you like to explore next? ").lower()
                         continue
 
+            #If person does not have enough time but still chose to continue, then this sends them to a new section
             else:
                 print("You do not have enough time to explore this area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
         
+        #Eastern section
         if section == "east":
 
             chosen.append("east")
@@ -533,6 +598,7 @@ def park(stars):
             print("The dried fountain lies to the left. The gardens are on the right.")
             print("")
 
+            #Asks which path to go to, of which there are two
             which_side = input("Which side do you go to? ").lower()
 
             while which_side not in ["fountain","gardens","left","right"]:
@@ -551,13 +617,14 @@ def park(stars):
                 print("The bag, however, is beckoning for it to be opened and exhumed.")
                 print("")
 
+                #First opportunity to go back
                 grab_bag = input("Do you grab the bag, or leave it alone? ").lower()
 
                 while grab_bag not in ["grab the bag", "leave it alone"]:
                     grab_bag = input("The bag still beckons. Do you grab the bag or leave it alone? ").lower()
                 
                 if grab_bag == "grab the bag":
-                    time -= 0.5
+                    stars_time_input.time -= 0.5
                     print("")
                     print("Your hand darts into the hedges, and you snatch the bag.")
                     print("")
@@ -576,12 +643,13 @@ def park(stars):
                         which_path = input("You can't go straight. Choose right or left. ").lower()
                     
                     if which_path == "left":
-                        decoder = 'garden_1'
+                        stars_time_input.decoder = 'garden_1'
                     
                     if which_path == "right":
-                        decoder = 'garden_2'
+                        stars_time_input.decoder = 'garden_2'
                     
-                    door_unlocking(decoder)
+                    #Goes to decoder function, which is the pygame section
+                    stars_time_input.time = door_unlocking(stars_time_input)
 
                     while True:
                         for event in pygame.event.get():
@@ -590,18 +658,18 @@ def park(stars):
                             else:
                                 break
                 
-                    print(f"You have {time} hours left.")
+                    print(f"You have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
 
                 if grab_bag == "leave it alone":
-                    time -= 0.5
-                    print(f"You have {time} hours left.")
+                    stars_time_input.time -= 0.5
+                    print(f"You have {stars_time_input.time} hours left.")
                     section = input("Which area would you like to explore next? ").lower()
                     continue
                 
             if which_side == "fountain" or which_side == "left":
-                time -= 0.5
+                stars_time_input.time -= 0.5
                 print("")
                 print("The dried fountain has stains of green and black. Leaves are scattered in the basin.")
                 print("")
@@ -610,9 +678,10 @@ def park(stars):
                 print("You look around the fountain, when something catches your eye.")
                 print("")
 
-                decoder = 'statue_1'
+                stars_time_input.decoder = 'statue_1'
 
-                door_unlocking(decoder)
+                #Goes to decoder function, which is where the pygame is
+                door_unlocking(stars_time_input)
 
                 while True:
                     for event in pygame.event.get():
@@ -621,20 +690,29 @@ def park(stars):
                         else:
                             break
                         
-                print(f"You have {time} hours left.")
+                print(f"You have {stars_time_input.time} hours left.")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
             
+            #Asks which section if not enough time
             else:
                 print("You do not have enough time to explore this area. Please choose a different section")
                 section = input("Which area would you like to explore next? ").lower()
                 continue
 
-    if time <= 0:
+    #If time runs out, then this message appears
+    if stars_time_input.time <= 0:
         print("")
-        print("You have ran out of time for today. You must return to the hotel immediately.")
+        print("You have either ran out of time for today or you have left the park. You must return to the hotel immediately.")
         print("")
-        print(f"Good night agent. Your next instructions will be sent tomorrow morning.")
+        print("The information you gathered will surely aid in the mission.")
+        print("")
+        print("Now we just need to wait for tomorrow to find out...")
+        print("")
+        print("")
+        print("END OF PART I")
+        print("")
+        print("")
          
 def base(time):
     """Extension to park() function"""
@@ -654,6 +732,7 @@ def base(time):
     print("You immediately go to the janitor's outfit and put it on. Blending in is better than sneaking around.")
     print("You pick up the backpack. There's enough room in there for one item you saw above.")
 
+    #Choose a story item to use later on
     grabbed_item = input("Which item do you pick up and put in your bag? ").lower()
 
     while grabbed_item not in ["matches,", "flashlight", "crowbar", "hammer","ammunition","newspapers","nails and screws","screwdriver"]:
@@ -692,6 +771,7 @@ def base(time):
 
     inspect_further = input("Do you wish to inspect the contents further? ").lower()
     
+    #Waste time trap
     if inspect_further == "yes":
         time += 1.0
         print("You inspected the papers further, but you could not find anything else of importance.")
@@ -737,6 +817,7 @@ def run_away(time):
     print("With you, you brought:")
     print("")
 
+    #Prints the available tools to the player's disposal
     for keys in tools:
         print(f" - {keys}")
     
@@ -747,6 +828,7 @@ def run_away(time):
     while which_tool not in tools:
         which_tool = input("Without tools, you will surely be captured. Pick one to use. ").lower()
     
+    #Enacts the self destruct on the phone
     if which_tool == "phone":
         print("You press the self-destruct button and count to two.")
         print("Then, you quickly throw it behind you.")
@@ -773,11 +855,12 @@ def run_away(time):
 
     del tools[which_tool]
     
+    #Ends mission
     time = 0
 
     return time
 
-def door_unlocking(code):
+def door_unlocking(time_decoder_input):
     """'Function that unlocks doors'"""
 
     pygame.init()
@@ -786,7 +869,7 @@ def door_unlocking(code):
     
     print("You are approaching a panel.")
 
-    if code == "garden_1":
+    if time_decoder_input.decoder == "garden_1":
 
         screen = pygame.display.set_mode( (525, 500) ) 
 
@@ -815,10 +898,15 @@ def door_unlocking(code):
 
         if rhombus == "RAQJMSTX":
             print("The box clicks open!")
+            print("A piece of paper lies inside.")
+            print("You can't read the wording on the parchment, however. Best to return this to HQ immediately.")
+            story_items["parchment"]
+
+            time_decoder_input.time = 0
             
-        return
+        return time_decoder_input.time
         
-    elif code == 'garden_2':
+    elif time_decoder_input.decoder == 'garden_2':
 
         screen = pygame.display.set_mode( (400, 400) )
 
@@ -843,10 +931,15 @@ def door_unlocking(code):
         
         if circle == "32457198":
             print("The box clicks open!")
-        
-        return
+            print("A stone lies in the box. It doesn't seem like anything special. But there may be something else unseen.")
+            print("Best to return the stone to HQ at once.")
+            story_items["stone"]
 
-    elif code == 'statue_1':
+            time_decoder_input.time = 0
+        
+        return time_decoder_input.time
+
+    elif time_decoder_input.decoder == 'statue_1':
        
         screen = pygame.display.set_mode( (650, 650) )
        
@@ -878,46 +971,20 @@ def door_unlocking(code):
 
         if x_symbol == "~-*$__&*+~":
             print("The box clicks open!")
+            print("Inside the box lies a key. It's made of brass and has a big clover on the end.")
+            print("It seems important. HQ should take a look immediately.")
+            story_items["clover_key"]
+
+            time_decoder_input.time = 0
         
-        return
+        return time_decoder_input.time
 
     else:
         print("You do not have the correct decoder to try this door. Find the encryption and try again.")
 
-def Hagenstade(hour_star_input):
-    """Sequence for player"""
-
-    if hour_star_input.hours == 25:
-        print(f"The parade will go on tomorrow, and begins at 09:00. The time right now is 08:00. That leaves you with {hour_star_input.hours} hours.")
-        print("")
-        print("Until then, explore the area, collect intel, and gain skills and tools to help you in Translutia.")
-        print("")
-        print("While you do explore Hagenstade, be wary of the curfew, which is at 20:00 sharp. Anyone not in their house by curfew will be arrested.")
-        print("")
-        print("We have received reports that the park in Hagenstade has had some recent activity worth investigating.")
-        print("")
-        print("We don't need to remind you that arrest or capture is not an option.")
-        print("")
-        print("Your capture puts the whole operation at risk. The GSS trusts you to make the right decisions. Other than that, your time is yours.")
-        print("")
-        
-        hour_star_input.choice = input("Please input 'park' to begin the game. ").lower()
-
-        while hour_star_input.choice not in ["park", "port", "bank", "nationalbank"]:
-            hour_star_input.choice = input("Please input 'park'. You only have a limited time to explore. ").lower()
-
-        locations(hour_star_input)
-
-def locations(hour_star_choice_input):
-    """To be used with Hagenstade function for ease of use"""
-
-    if hour_star_choice_input.choice == "park":
-        hour_star_choice_input.hours -= 24
-        hour_star_choice_input.stars = park(hour_star_choice_input.stars)
-
 #Main / Initial Function        
 def main():
-    """Introductory Procedure"""
+    """Introductory Procedure. Ignore the ## as those were originally delays, but I decided against it."""
 
     ##(3.0)
     print("")
@@ -994,7 +1061,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
-
-#I just wanted to reach 1000
+#I reached 1000 lines. :D
