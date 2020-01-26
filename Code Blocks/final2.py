@@ -2,11 +2,10 @@
 import random
 import sys
 import time
-import pygame
+#import pygame
 
 #Variables
 tools = {
-    """Tools that will be used throughout game"""
     'binoculars': {
         'quantity': 1,
        'uses': ['zoom_in', 'night_vision', 'thermal_vision']
@@ -30,11 +29,9 @@ tools = {
 }
 
 story_items = {
-    """Will have some story elements added to it"""
 }
 
 skills: {
-    """Just a list of skills that the player will have"""
     'espionage': ['follow', 'record', 'plant'],
     'technology': ['decrypt', 'encrypt', 'storage'],
     'combat': ['hand_to_hand', 'firearm']
@@ -303,7 +300,7 @@ def park(stars_time_input):
                     del tools["flashdrive"]
                     print("")
                     print("You can't think about the lost flashdrive however. Let's hope nothing important was on there.")
-                    stars += 1
+                    stars_time_input.stars += 1
                     
                     #Sends to base function, which is continuation of story
                     time_removed = base(stars_time_input.time)
@@ -376,7 +373,7 @@ def park(stars_time_input):
                     continue
                 
                 if entering == "yes" and stars_time_input.time >= 5.5:
-                    stars += 1
+                    stars_time_input.stars += 1
 
                     #Enters base function
                     time_removed = base(stars_time_input.time)
