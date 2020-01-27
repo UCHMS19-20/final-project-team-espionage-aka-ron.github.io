@@ -42,7 +42,7 @@ Skills:
 
 The flowchart provided gives the overall outline of the code, and how it works.
 
-INSERT FILE HERE
+[Flowchart](Espionage Game.pdf)
 
 ## Presentation
 
