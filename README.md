@@ -1,5 +1,9 @@
 # Espionage the Game
 
+## Game Info
+
+### The final version of the game can be found in the Code Blocks folder, and is the file final2.py
+
 ## Description
 
 ### This game, very much inspired by James Bond, is a text-based game that interacts with the user with set given paths.
@@ -37,7 +41,7 @@ Skills:
 - Combat: hand-to-hand, firearm
 
 ### You will also receive story items during your mission, which may be useful in your quest.
-  
+
 ## Flowchart
 
 The flowchart provided gives the overall outline of the code, and how it works.
