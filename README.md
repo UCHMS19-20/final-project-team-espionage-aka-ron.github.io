@@ -58,5 +58,5 @@ A link to the presentation used on January 23 when presenting the game demo:
 
 - Introduction to Programming Course
 - Family Members
-- "Basic writing and formatting syntax." *GitHub Help*, GitHub Inc. Last Visited on January 26, 2020.
+- "Basic writing and formatting syntax." *GitHub Help*, GitHub Inc. Last Visited on January 26, 2020. 
 
