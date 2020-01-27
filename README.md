@@ -2,7 +2,9 @@
 
 ## Game Info
 
-### The final version of the game can be found in the Code Blocks folder, and is the file final2.py
+### The final version of the game can be found in my other repository (final-project-team-espionage-aka-ron) as the file final2.py in the Code Blocks folder.
+
+(I had some issues with creating my website, resulting in two different repositories, one with my website and flowchart (the one you're on right now), and one with my most up-to-date game. Sorry for any confusion.
 
 ## Description
 
