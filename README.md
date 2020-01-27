@@ -42,9 +42,17 @@ Skills:
 
 The flowchart provided gives the overall outline of the code, and how it works.
 
+INSERT FILE HERE
+
 ## Presentation
 
 A link to the presentation used on January 23 when presenting the game demo:
 
 [Google Slides Presentation](https://docs.google.com/presentation/d/1eQHBji0EMlBR3ZZYGeKeEoO_4-TSMPFRbrBA9Ai_urA/edit#slide=id.p)
+
+## Citations
+
+- Introduction to Programming Course
+- Family Members
+- "Basic writing and formatting syntax." *GitHub Help*, GitHub Inc. Last Visited on January 26, 2020.
 
